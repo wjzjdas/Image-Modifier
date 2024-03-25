@@ -1,0 +1,1 @@
+void change_brightness(struct rgb_img *im, float f)
