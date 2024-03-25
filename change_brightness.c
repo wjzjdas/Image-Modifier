@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include <math.h>
-#include "c_img.h"
+#include "change_brightness.h"
 
 void change_brightness(struct rgb_img *im, float f){
     int height = im->height;
@@ -37,7 +37,7 @@ int main(){
     //therefore, read all rgb data from "cannon.jpg" into im
     read_in_img(&im, filename);
 
-    change_brightness(im, 10);
+    change_brightness(im, 0.5);
 
     char filename_new[] = "cannon_n.bin";
     write_img(im, filename_new);

@@ -1,7 +1,7 @@
 CC = gcc
 BASICS = -Werror -Wall -Wextra -Wconversion -Wdouble-promotion -Wstrict-prototypes -pedantic
 LFLAGS = -lm
-EXEC = change_brightness tests
+EXEC = change_brightness seamcarving
 HEADERS = c_img.h
 
 all:   CFLAGS = $(BASICS)
@@ -13,7 +13,7 @@ debug: $(EXEC)
 change_brightness: c_img.c change_brightness.c
 	$(CC) $^ $(LFLAGS) -o $@
     
-tests: c_img.c seamcarving.c
+seamcarving: c_img.c seamcarving.c
 	$(CC) $^ $(LFLAGS) -o $@
 
 %.o:%.c $(HEADERS) 
