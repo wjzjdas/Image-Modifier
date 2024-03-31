@@ -5,6 +5,7 @@
 
 //The function will compute the dual-gradient energy function, and place it in the struct rgb_img *grad.
 void calc_energy(struct rgb_img *im, struct rgb_img **grad){
+    create_img(grad, im->height, im->width);
     int height = im -> height;
     int width = im -> width;
 
@@ -36,15 +37,38 @@ void calc_energy(struct rgb_img *im, struct rgb_img **grad){
             double delta_x = pow((double)right[0] - (double)left[0], 2) + pow((double)right[1] - (double)left[1], 2) + pow((double)right[2] - (double)left[2], 2);
             double delta_y = pow((double)up[0] - (double)down[0], 2) + pow((double)up[1] - (double)down[1], 2) + pow((double)up[2] - (double)down[2], 2);
 
-            uint8_t energy =  (uint8_t)fmax(fmin(sqrt(delta_x + delta_y)/10, 255), 0);
+            int energy =  (int)fmax(fmin(sqrt(delta_x + delta_y)/10, 255), 0);
             
             set_pixel(*grad, y, x, energy, energy, energy);
         }
     }
 }
 
+//Define the function dynamic_seam(struct rgb_img *grad, double **best_arr) which allocates and computes the dynamic array *best_arr.
+//(*best_arr)[i*width+j] contains the minimum cost of a seam from the top of grad to the point (i,j)
 void dynamic_seam(struct rgb_img *grad, double **best_arr){
 
+    int height = grad->height;
+    int width = grad->width;
+    *best_arr = (double *)malloc(height * width * sizeof(double));
+
+    for(int i = 0; i < height; i++){
+        for(int j = 0; j < width; j++){
+            if (i == 0) { //First row
+                (*best_arr)[i*width + j] = (double)get_pixel(grad, i, j, 0);
+            } else {
+                (*best_arr)[i*width + j] = (double)get_pixel(grad, i, j, 0);
+                if (j == 0) { //Leftmost column
+                    (*best_arr)[i*width + j] += fmin((*best_arr)[(i-1)*width + j],(*best_arr)[(i-1)*width + j+1]);
+                } else if(j == width-1) { //Rightmost column
+                    (*best_arr)[i*width + j] += fmin((*best_arr)[(i-1)*width + j],(*best_arr)[(i-1)*width + j-1]);
+                } else {
+                    (*best_arr)[i*width + j] += fmin(fmin((*best_arr)[(i-1)*width + j],(*best_arr)[(i-1)*width + j-1]),(*best_arr)[(i-1)*width + j+1]);
+                }
+            }
+        }   
+    }
+    
 }
 
 void recover_path(double *best, int height, int width, int **path){
@@ -59,14 +83,18 @@ int main(){
 
    
     struct rgb_img *im;
-    char filename[] = "3x4.bin";
+    char filename[] = "6x5.bin";
     read_in_img(&im, filename);
 
     struct rgb_img *grad;
-    create_img(&grad, im->height, im->width);
     
     calc_energy(im,  &grad);
     
-    print_grad(grad, 0);
+    double *best_arr;
+    dynamic_seam(grad, &best_arr);
+    
+    for(int i = 0; i < 30; i++){
+        printf("%f\n", best_arr[i]); 
+    }
     return 0;
 }
