@@ -59,12 +59,12 @@ void destroy_image(struct rgb_img *im)
 }
 
 
-void print_grad(struct rgb_img *grad){
+void print_grad(struct rgb_img *grad, int c){
     int height = grad->height;
     int width = grad->width;
     for(int i = 0; i < height; i++){
         for(int j = 0; j < width; j++){
-            printf("%d\t", get_pixel(grad, i, j, 0));
+            printf("%d\t", get_pixel(grad, i, j, c));
         }
     printf("\n");    
     }

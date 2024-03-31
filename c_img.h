@@ -17,7 +17,7 @@ void write_img(struct rgb_img *im, char *filename);
 uint8_t get_pixel(struct rgb_img *im, int y, int x, int col);
 void set_pixel(struct rgb_img *im, int y, int x, int r, int g, int b);
 void destroy_image(struct rgb_img *im);
-void print_grad(struct rgb_img *grad);
+void print_grad(struct rgb_img *grad, int c);
 
 
 #endif
