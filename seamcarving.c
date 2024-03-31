@@ -93,8 +93,5 @@ int main(){
     double *best_arr;
     dynamic_seam(grad, &best_arr);
     
-    for(int i = 0; i < 30; i++){
-        printf("%f\n", best_arr[i]); 
-    }
     return 0;
 }
