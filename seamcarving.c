@@ -124,15 +124,15 @@ int main(){
     double *best;
     int *path;
 
-    read_in_img(&im, "HJoceanSmall.bin");
+    read_in_img(&im, "pfp_cur.bin");
     
-    for(int i = 1; i <= 200; i++){
+    for(int i = 1; i <= 100; i++){
         calc_energy(im,  &grad);
         dynamic_seam(grad, &best);
         recover_path(best, grad->height, grad->width, &path);
         remove_seam(im, &cur_im, path);
 
-        char filename[200] = "HJoceanSmall_cur.bin"; 
+        char filename[200] = "pfp_cur.bin"; 
         printf("Removing Seam #%d\n",i);
         write_img(cur_im, filename);
 
