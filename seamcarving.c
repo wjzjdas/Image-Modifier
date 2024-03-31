@@ -5,9 +5,10 @@
 
 //The function will compute the dual-gradient energy function, and place it in the struct rgb_img *grad.
 void calc_energy(struct rgb_img *im, struct rgb_img **grad){
-    create_img(grad, im->height, im->width);
+    
     int height = im -> height;
     int width = im -> width;
+    create_img(grad, height, width);
 
     for (int y = 0; y < height; ++y){
         for (int x = 0; x < width; ++x){
@@ -71,27 +72,78 @@ void dynamic_seam(struct rgb_img *grad, double **best_arr){
     
 }
 
+//This function allocates a path through the minimum seam as defined by the array best.
 void recover_path(double *best, int height, int width, int **path){
+
+    *path = (int *)malloc(height*sizeof(int));
+    double min;
+
+    for(int i = 0; i < height; i++){
+        min = best[i*width];
+        for(int j = 0; j < width; j++){
+            if (best[i*width + j] < min) {
+                min = best[i*width + j];
+                (*path)[i] = j;
+            }
+        }
+    }
 
 }
 
+
 void remove_seam(struct rgb_img *src, struct rgb_img **dest, int *path){
+    
+    int height = src -> height;
+    int width = src -> width;
+    create_img(dest, height, width-1);
+
+    for (int y = 0; y < height; ++y){
+        for (int x = 0; x < width; ++x){
+            if (path[y] > x){
+                int r = get_pixel(src, y, x, 0);
+                int g = get_pixel(src, y, x, 1);
+                int b = get_pixel(src, y, x, 2);
+                set_pixel(*dest, y, x, r, g, b);
+            } else if (path[y] < x){
+                int r = get_pixel(src, y, x, 0);
+                int g = get_pixel(src, y, x, 1);
+                int b = get_pixel(src, y, x, 2);
+                set_pixel(*dest, y, x-1, r, g, b);
+            }
+        }
+    }
 
 }
 
 int main(){
-
+    
    
     struct rgb_img *im;
-    char filename[] = "6x5.bin";
-    read_in_img(&im, filename);
-
+    struct rgb_img *cur_im;
     struct rgb_img *grad;
+    double *best;
+    int *path;
+
+    read_in_img(&im, "HJoceanSmall.bin");
     
-    calc_energy(im,  &grad);
-    
-    double *best_arr;
-    dynamic_seam(grad, &best_arr);
-    
+    for(int i = 1; i <= 200; i++){
+        calc_energy(im,  &grad);
+        dynamic_seam(grad, &best);
+        recover_path(best, grad->height, grad->width, &path);
+        remove_seam(im, &cur_im, path);
+
+        char filename[200] = "HJoceanSmall_cur.bin"; 
+        write_img(cur_im, filename);
+
+
+        destroy_image(im);
+        destroy_image(grad);
+        free(best);
+        free(path);
+        im = cur_im;
+    }
+
+    destroy_image(im);
+        
     return 0;
 }
