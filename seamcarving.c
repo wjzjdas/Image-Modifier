@@ -8,7 +8,6 @@ void calc_energy(struct rgb_img *im, struct rgb_img **grad){
     int height = im -> height;
     int width = im -> width;
 
-
     for (int y = 0; y < height; ++y){
         for (int x = 0; x < width; ++x){
             //Acuquire the surrounding cell coordinates, lrud=[left, right, up, down]
