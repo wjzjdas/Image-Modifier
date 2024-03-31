@@ -133,6 +133,7 @@ int main(){
         remove_seam(im, &cur_im, path);
 
         char filename[200] = "HJoceanSmall_cur.bin"; 
+        printf("Removing Seam #%d\n",i);
         write_img(cur_im, filename);
 
 
