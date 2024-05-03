@@ -132,7 +132,7 @@ int main(){
         recover_path(best, grad->height, grad->width, &path);
         remove_seam(im, &cur_im, path);
 
-        char filename[200] = "IMG_8358_CUR.bin"; 
+        char filename[200] = "image_new.bin.bin"; 
         printf("Removing Seam #%d\n",i);
         write_img(cur_im, filename);
 
