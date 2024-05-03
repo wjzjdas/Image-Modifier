@@ -1,4 +1,4 @@
-#How to Use (In Case I Forget):
+# How to Use (In Case I Forget):
 
  || Changing Brightness ||
 
