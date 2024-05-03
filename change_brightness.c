@@ -39,7 +39,7 @@ int main(){
 
     change_brightness(im, 0.5);
 
-    char filename_new[] = "cannon_n.bin";
+    char filename_new[] = "image_new.bin";
     write_img(im, filename_new);
 
 
