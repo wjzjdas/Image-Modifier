@@ -1,4 +1,9 @@
-# How to Use (In Case I Forget):
+# Description:
+
+Including source code for a brightness modifier, as well as a seam remover. 
+> Seam removing is a content-aware image resizing technique written in C, where the image is reduced in size by one pixel of width (or height) at a time.
+
+# How to Use:
 
  || Changing Brightness ||
 
